@@ -108,6 +108,9 @@ void opcontrol() {
 int yMotion;
 int xMotion;
 int ArmVoltage = 30;
+
+		Arm.move_velocity(-50);
+    	pros::delay(500);
 	
 	while (true)
 	{
@@ -135,45 +138,42 @@ int ArmVoltage = 30;
 		BackRight.move(right);
 		FrontRight.move(-right);
 
-	Arm.move_velocity(-50);
-    pros::delay(500);
 
+		if(master.get_digital(DIGITAL_R2))
+			{
+				Intake.move_velocity(115);
 
-	if(master.get_digital(DIGITAL_R2))
+			}
+		else if (master.get_digital(DIGITAL_R1))
+			{
+				Intake.move_velocity(-115);
+
+			}
+		else{
+				Intake.move_velocity(0);
+		}
+
+		if(master.get_digital(DIGITAL_DOWN))
 		{
-			Intake.move_velocity(115);
+			Elevation.move_velocity(50);
+		}
+		else if (master.get_digital(DIGITAL_UP))
+		{
+			Elevation.move_velocity(-50);
+		}
+		else{
+			Elevation.move_velocity(0);
+		}
+
+		if(master.get_digital(DIGITAL_L1))
+		{ 
+			Piston.set_value(false);
 
 		}
-	else if (master.get_digital(DIGITAL_R1))
+		else 
 		{
-			Intake.move_velocity(-115);
-
+			Piston.set_value(true);
 		}
-	else{
-			Intake.move_velocity(0);
 	}
-
-	if(master.get_digital(DIGITAL_DOWN))
-	{
-		Elevation.move_velocity(50);
-	}
-	else if (master.get_digital(DIGITAL_UP))
-	{
-		Elevation.move_velocity(-50);
-	}
-	else{
-		Elevation.move_velocity(0);
-	}
-
-    if(master.get_digital(DIGITAL_L1))
-    { 
-		Piston.set_value(false);
-
-	}
-	else 
-	{
-		Piston.set_value(true);
-	}
-}
 
 }
