@@ -9,6 +9,15 @@
 // #include "okapi/api/chassis/controller/chassisControllerPid.hpp"
 // using namespace okapi;
 
+pros::Motor FrontLeft(7, false);
+pros::Motor FrontRight(2, true);
+pros::Motor BackRight(12, false);
+pros::Motor BackLeft(11, true);
+pros::Motor Arm(19, false);
+pros::Motor Intake(20, false);
+pros::ADIDigitalOut Piston('B');
+pros::Motor Elevation(5,false);
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -95,14 +104,7 @@ void autonomous() {
 void opcontrol() {
 
 
-	pros::Motor FrontLeft(6, false);
-	pros::Motor FrontRight(2, true);
-	pros::Motor BackRight(12, false);
-	pros::Motor BackLeft(11, true);
-	pros::Motor Arm(19, false);
-	pros::Motor Intake(20, false);
-	pros::ADIDigitalOut Piston('B');
-	pros::Motor Elevation(5,false);
+
 
 
 int yMotion;
@@ -111,7 +113,8 @@ int ArmVoltage = 30;
 
 		Arm.move_velocity(-50);
     	pros::delay(500);
-	
+
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	while (true)
 	{
 		pros::lcd::set_text(1, "READY TO DRIVE");
@@ -122,8 +125,6 @@ int ArmVoltage = 30;
 		pros::lcd::set_text(6, "Arm Motor:" + std::to_string(Arm.get_position()));
 		pros::lcd::set_text(7, "Intake Motor:" + std::to_string(Intake.get_position()));
 		
-
-		pros::Controller master(pros::E_CONTROLLER_MASTER);
 		// driving control code
 
 		yMotion = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X); // ik this looks wrong, but it works
@@ -165,6 +166,19 @@ int ArmVoltage = 30;
 			Elevation.move_velocity(0);
 		}
 
+
+		if(master.get_digital(DIGITAL_L1))
+		{ 
+			Piston.set_value(false);
+			
+
+		}
+		else 
+		{
+			Piston.set_value(true);
+		}
+	}
+
 		if(master.get_digital(DIGITAL_L1))
 		{ 
 			Piston.set_value(false);
@@ -174,6 +188,5 @@ int ArmVoltage = 30;
 		{
 			Piston.set_value(true);
 		}
-	}
 
 }
