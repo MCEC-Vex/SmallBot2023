@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "ProsProject",
+    "project_name": "Mr.Small Bot",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -309,7 +309,7 @@
       }
     },
     "upload_options": {
-      "icon": "alien"
+      "icon": "clawbot"
     }
   }
 }
